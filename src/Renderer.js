@@ -44,7 +44,12 @@ export type RenderOptions = {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
+    ignoreRendering?: (
+        element: NodeContainer,
+        renderTarget: RenderTarget<*>,
+        renderOptions: RenderOptions
+    ) => boolean
 };
 
 export interface RenderTarget<Output> {
@@ -99,6 +104,12 @@ export default class Renderer {
     }
 
     renderNode(container: NodeContainer) {
+        if (
+            this.options.ignoreRendering &&
+            this.options.ignoreRendering(container, this.target, this.options)
+        ) {
+            return;
+        }
         if (container.isVisible()) {
             this.renderNodeBackgroundAndBorders(container);
             this.renderNodeContent(container);
@@ -106,6 +117,12 @@ export default class Renderer {
     }
 
     renderNodeContent(container: NodeContainer) {
+        if (
+            this.options.ignoreRendering &&
+            this.options.ignoreRendering(container, this.target, this.options)
+        ) {
+            return;
+        }
         const callback = () => {
             if (container.childNodes.length) {
                 container.childNodes.forEach(child => {
@@ -161,6 +178,12 @@ export default class Renderer {
     }
 
     renderNodeBackgroundAndBorders(container: NodeContainer) {
+        if (
+            this.options.ignoreRendering &&
+            this.options.ignoreRendering(container, this.target, this.options)
+        ) {
+            return;
+        }
         const HAS_BACKGROUND =
             !container.style.background.backgroundColor.isTransparent() ||
             container.style.background.backgroundImage.length;

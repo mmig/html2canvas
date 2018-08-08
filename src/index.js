@@ -1,7 +1,8 @@
 /* @flow */
 'use strict';
 
-import type {RenderTarget} from './Renderer';
+import type {RenderTarget, RenderOptions} from './Renderer';
+import type NodeContainer from './NodeContainer';
 
 import CanvasRenderer from './renderer/CanvasRenderer';
 import Logger from './Logger';
@@ -14,9 +15,21 @@ export type Options = {
     canvas: ?HTMLCanvasElement,
     foreignObjectRendering: boolean,
     ignoreElements?: HTMLElement => boolean,
+    ignoreRendering?: (
+        element: NodeContainer,
+        renderTarget: RenderTarget<*>,
+        renderOptions: RenderOptions
+    ) => boolean,
+    renderSequential?: boolean,
     imageTimeout: number,
     logging: boolean,
     onclone?: Document => void,
+    onrendertarget?: (
+        renderTarget: RenderTarget<*>,
+        index: number,
+        renderTargets: RenderTarget<*>[],
+        renderOptions: RenderOptions
+    ) => RenderOptions | void,
     proxy: ?string,
     removeContainer: ?boolean,
     scale: number,

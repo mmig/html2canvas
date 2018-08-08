@@ -137,6 +137,7 @@ export const renderElement = (
                               fontMetrics,
                               imageStore,
                               logger,
+                              ignoreRendering: options.ignoreRendering,
                               scale: options.scale,
                               x: typeof options.x === 'number' ? options.x : left,
                               y: typeof options.y === 'number' ? options.y : top,
@@ -151,6 +152,34 @@ export const renderElement = (
                           };
 
                           if (Array.isArray(options.target)) {
+                              if (options.renderSequential) {
+                                  return options.target
+                                      .reduce((prev, target, index, list) => {
+                                          return prev.then(() => {
+                                              let _renderOptions = renderOptions;
+                                              const onrendertarget = options.onrendertarget;
+                                              if (typeof onrendertarget === 'function') {
+                                                  const result = onrendertarget(
+                                                      target,
+                                                      index,
+                                                      list,
+                                                      Object.assign({}, _renderOptions)
+                                                  );
+                                                  _renderOptions = result || _renderOptions;
+                                              }
+                                              const renderer = new Renderer(target, _renderOptions);
+                                              return renderer.render(stack);
+                                          });
+                                      }, Promise.resolve())
+                                      .then(
+                                          result =>
+                                              Array.isArray(options.target)
+                                                  ? options.target.map(
+                                                        renderTarget => renderTarget.canvas
+                                                    )
+                                                  : result
+                                      );
+                              }
                               return Promise.all(
                                   options.target.map(target => {
                                       const renderer = new Renderer(target, renderOptions);
