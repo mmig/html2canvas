@@ -11,7 +11,7 @@ Released under ${pkg.license} License`;
 
 const plugins = [
     new webpack.DefinePlugin({
-        '__DEV__': true,
+        '__DEV__': false,
         '__VERSION__': JSON.stringify(pkg.version)
     }),
     new webpack.BannerPlugin(banner)

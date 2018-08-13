@@ -359,7 +359,7 @@ var Length = function () {
 
         this.type = value.substr(value.length - 1) === '%' ? LENGTH_TYPE.PERCENTAGE : LENGTH_TYPE.PX;
         var parsedValue = parseFloat(value);
-        if (true && isNaN(parsedValue)) {
+        if (false) {
             console.error('Invalid value given for Length: "' + value + '"');
         }
         this.value = isNaN(parsedValue) ? 0 : parsedValue;
@@ -486,7 +486,7 @@ var parseDocumentSize = exports.parseDocumentSize = function parseDocumentSize(d
     var documentElement = document.documentElement;
 
     if (!body || !documentElement) {
-        throw new Error( true ? 'Unable to get document size' : '');
+        throw new Error( false ? 'Unable to get document size' : '');
     }
     var width = Math.max(Math.max(body.scrollWidth, documentElement.scrollWidth), Math.max(body.offsetWidth, documentElement.offsetWidth), Math.max(body.clientWidth, documentElement.clientWidth));
 
@@ -856,7 +856,7 @@ var parseBackgroundRepeat = function parseBackgroundRepeat(backgroundRepeat) {
             return BACKGROUND_REPEAT.REPEAT;
     }
 
-    if (true) {
+    if (false) {
         console.error('Invalid background-repeat value "' + backgroundRepeat + '"');
     }
 
@@ -1173,7 +1173,7 @@ var NodeContainer = function () {
         this.bounds = IS_INPUT ? (0, _Input.reformatInputBounds)((0, _Bounds.parseBounds)(node, scrollX, scrollY)) : (0, _Bounds.parseBounds)(node, scrollX, scrollY);
         this.curvedBounds = (0, _Bounds.parseBoundCurves)(this.bounds, this.style.border, this.style.borderRadius);
 
-        if (true) {
+        if (false) {
             this.name = '' + node.tagName.toLowerCase() + (node.id ? '#' + node.id : '') + node.className.toString().split(' ').map(function (s) {
                 return s.length ? '.' + s : '';
             }).join('');
@@ -1292,7 +1292,7 @@ var Vector = function Vector(x, y) {
     this.type = _Path.PATH.VECTOR;
     this.x = x;
     this.y = y;
-    if (true) {
+    if (false) {
         if (isNaN(x)) {
             console.error('Invalid x value given for Vector');
         }
@@ -3188,7 +3188,7 @@ var FontMetrics = exports.FontMetrics = function () {
 
             var body = this._document.body;
             if (!body) {
-                throw new Error( true ? 'No document found for font metrics' : '');
+                throw new Error( false ? 'No document found for font metrics' : '');
             }
 
             container.style.visibility = 'hidden';
@@ -3264,7 +3264,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Proxy = exports.Proxy = function Proxy(src, options) {
     if (!options.proxy) {
-        return Promise.reject( true ? 'No proxy defined' : null);
+        return Promise.reject( false ? 'No proxy defined' : null);
     }
     var proxy = options.proxy;
 
@@ -3289,7 +3289,7 @@ var Proxy = exports.Proxy = function Proxy(src, options) {
                         reader.readAsDataURL(xhr.response);
                     }
                 } else {
-                    reject( true ? 'Failed to proxy resource ' + src.substring(0, 256) + ' with status code ' + xhr.status : '');
+                    reject( false ? 'Failed to proxy resource ' + src.substring(0, 256) + ' with status code ' + xhr.status : '');
                 }
             } else {
                 resolve(xhr.responseText);
@@ -3307,7 +3307,7 @@ var Proxy = exports.Proxy = function Proxy(src, options) {
             var timeout = options.imageTimeout;
             xhr.timeout = timeout;
             xhr.ontimeout = function () {
-                return reject( true ? 'Timed out (' + timeout + 'ms) proxying ' + src.substring(0, 256) : '');
+                return reject( false ? 'Timed out (' + timeout + 'ms) proxying ' + src.substring(0, 256) : '');
             };
         }
 
@@ -3341,7 +3341,7 @@ var html2canvas = function html2canvas(element, conf) {
     var logger = new _Logger2.default(typeof config.logging === 'boolean' ? config.logging : true);
     logger.log('html2canvas ' + "1.0.0-alpha.12");
 
-    if (true && typeof config.onrendered === 'function') {
+    if (false) {
         logger.error('onrendered option is deprecated, html2canvas returns a Promise with the canvas as the value');
     }
 
@@ -3371,7 +3371,7 @@ var html2canvas = function html2canvas(element, conf) {
 
     var result = (0, _Window.renderElement)(element, _extends({}, defaultOptions, config), logger);
 
-    if (true) {
+    if (false) {
         return result.catch(function (e) {
             logger.error(e);
             throw e;
@@ -3442,7 +3442,7 @@ var renderElement = exports.renderElement = function renderElement(element, opti
     return (options.foreignObjectRendering ? // $FlowFixMe
     _Feature2.default.SUPPORT_FOREIGNOBJECT_DRAWING : Promise.resolve(false)).then(function (supportForeignObject) {
         return supportForeignObject ? function (cloner) {
-            if (true) {
+            if (false) {
                 logger.log('Document cloned, using foreignObject rendering');
             }
 
@@ -3483,7 +3483,7 @@ var renderElement = exports.renderElement = function renderElement(element, opti
                 clonedElement = _ref3[1],
                 resourceLoader = _ref3[2];
 
-            if (true) {
+            if (false) {
                 logger.log('Document cloned, using computed rendering');
             }
 
@@ -3496,7 +3496,7 @@ var renderElement = exports.renderElement = function renderElement(element, opti
 
             return resourceLoader.ready().then(function (imageStore) {
                 var fontMetrics = new _Font.FontMetrics(clonedDocument);
-                if (true) {
+                if (false) {
                     logger.log('Starting renderer');
                 }
 
@@ -3554,7 +3554,7 @@ var renderElement = exports.renderElement = function renderElement(element, opti
                     if (options.removeContainer === true) {
                         if (container.parentNode) {
                             container.parentNode.removeChild(container);
-                        } else if (true) {
+                        } else if (false) {
                             logger.log('Cannot detach cloned iframe as it is not in the DOM anymore');
                         }
                     }
@@ -3599,7 +3599,7 @@ var _listStyle = __webpack_require__(8);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var NodeParser = exports.NodeParser = function NodeParser(node, resourceLoader, logger) {
-    if (true) {
+    if (false) {
         logger.log('Starting node parsing');
     }
 
@@ -3610,7 +3610,7 @@ var NodeParser = exports.NodeParser = function NodeParser(node, resourceLoader, 
 
     parseNodeTree(node, container, stack, resourceLoader, index);
 
-    if (true) {
+    if (false) {
         logger.log('Finished parsing node tree');
     }
 
@@ -3620,7 +3620,7 @@ var NodeParser = exports.NodeParser = function NodeParser(node, resourceLoader, 
 var IGNORED_NODE_NAMES = ['SCRIPT', 'HEAD', 'TITLE', 'OBJECT', 'BR', 'OPTION'];
 
 var parseNodeTree = function parseNodeTree(node, parent, stack, resourceLoader, index) {
-    if (true && index > 50000) {
+    if (false) {
         throw new Error('Recursion error while parsing node tree');
     }
 
@@ -5246,7 +5246,7 @@ var Circle = function Circle(x, y, radius) {
     this.x = x;
     this.y = y;
     this.radius = radius;
-    if (true) {
+    if (false) {
         if (isNaN(x)) {
             console.error('Invalid x value given for Circle');
         }
@@ -5534,7 +5534,7 @@ var Renderer = function () {
             }
             this.renderStack(stack);
             var target = this.target.getTarget();
-            if (true) {
+            if (false) {
                 return target.then(function (output) {
                     _this5.options.logger.log('Render completed');
                     return output;
@@ -6161,7 +6161,7 @@ var DocumentCloner = exports.DocumentCloner = function () {
                         return _this.resourceLoader.inlineImage(backgroundImage.args[0]).then(function (img) {
                             return img && typeof img.src === 'string' ? 'url("' + img.src + '")' : 'none';
                         }).catch(function (e) {
-                            if (true) {
+                            if (false) {
                                 _this.logger.log('Unable to load image', e);
                             }
                         });
@@ -6183,7 +6183,7 @@ var DocumentCloner = exports.DocumentCloner = function () {
                             parentNode.replaceChild(clonedChild, node);
                         }
                     }).catch(function (e) {
-                        if (true) {
+                        if (false) {
                             _this.logger.log('Unable to load image', e);
                         }
                     });
@@ -6202,7 +6202,7 @@ var DocumentCloner = exports.DocumentCloner = function () {
                     }).then(function (text) {
                         return createStyleSheetFontsFromText(text, sheet.href);
                     }).catch(function (e) {
-                        if (true) {
+                        if (false) {
                             _this2.logger.log('Unable to load stylesheet', e);
                         }
                         return [];
@@ -6250,7 +6250,7 @@ var DocumentCloner = exports.DocumentCloner = function () {
                     img.src = node.toDataURL();
                     return img;
                 } catch (e) {
-                    if (true) {
+                    if (false) {
                         this.logger.log('Unable to clone canvas contents, canvas is tainted');
                     }
                 }
@@ -6583,7 +6583,7 @@ var createIframeContainer = function createIframeContainer(ownerDocument, bounds
     cloneIframeContainer.scrolling = 'no'; // ios won't scroll without it
     cloneIframeContainer.setAttribute(IGNORE_ATTRIBUTE, 'true');
     if (!ownerDocument.body) {
-        return Promise.reject( true ? 'Body element not found in Document that is getting rendered' : '');
+        return Promise.reject( false ? 'Body element not found in Document that is getting rendered' : '');
     }
 
     ownerDocument.body.appendChild(cloneIframeContainer);
@@ -6637,7 +6637,7 @@ var cloneWindow = exports.cloneWindow = function cloneWindow(ownerDocument, boun
                 return onclone(documentClone);
             }).then(function () {
                 return result;
-            }) : result : Promise.reject( true ? 'Error finding the ' + referenceElement.nodeName + ' in the cloned document' : '');
+            }) : result : Promise.reject( false ? 'Error finding the ' + referenceElement.nodeName + ' in the cloned document' : '');
         });
 
         documentClone.open();
@@ -6790,7 +6790,7 @@ var ResourceLoader = function () {
                     var timeout = _this3.options.imageTimeout;
                     xhr.timeout = timeout;
                     xhr.ontimeout = function () {
-                        return reject( true ? 'Timed out (' + timeout + 'ms) fetching ' + src.substring(0, 256) : '');
+                        return reject( false ? 'Timed out (' + timeout + 'ms) fetching ' + src.substring(0, 256) : '');
                     };
                 }
                 xhr.open('GET', src, true);
@@ -6818,7 +6818,7 @@ var ResourceLoader = function () {
         value: function addImage(key, src, useCORS) {
             var _this4 = this;
 
-            if (true) {
+            if (false) {
                 this.logger.log('Added image ' + key.substring(0, 256));
             }
 
@@ -6844,7 +6844,7 @@ var ResourceLoader = function () {
                     if (_this4.options.imageTimeout) {
                         var timeout = _this4.options.imageTimeout;
                         setTimeout(function () {
-                            return reject( true ? 'Timed out (' + timeout + 'ms) fetching ' + src.substring(0, 256) : '');
+                            return reject( false ? 'Timed out (' + timeout + 'ms) fetching ' + src.substring(0, 256) : '');
                         }, timeout);
                     }
                 });
@@ -6875,14 +6875,14 @@ var ResourceLoader = function () {
             var keys = Object.keys(this.cache);
             var values = keys.map(function (str) {
                 return _this5.cache[str].catch(function (e) {
-                    if (true) {
+                    if (false) {
                         _this5.logger.log('Unable to load image', e);
                     }
                     return null;
                 });
             });
             return Promise.all(values).then(function (images) {
-                if (true) {
+                if (false) {
                     _this5.logger.log('Finished loading ' + images.length + ' images', images);
                 }
                 return new ResourceStore(keys, images);
@@ -6948,7 +6948,7 @@ var _loadImage = function _loadImage(src, timeout) {
         }
         if (timeout) {
             setTimeout(function () {
-                return reject( true ? 'Timed out (' + timeout + 'ms) loading image' : '');
+                return reject( false ? 'Timed out (' + timeout + 'ms) loading image' : '');
             }, timeout);
         }
     });
