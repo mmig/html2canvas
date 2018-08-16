@@ -3051,7 +3051,7 @@ var parseTextBounds = exports.parseTextBounds = function parseTextBounds(value, 
         }
         offset += text.length;
     }
-    if (parent.options.fixLigatures && parent.style.fontVariantLigatures !== _fontVariantLigatures.FONT_VARIANT_LIGATURES.NONE) {
+    if (textBounds.length > 0 && parent.options.fixLigatures && parent.style.fontVariantLigatures !== _fontVariantLigatures.FONT_VARIANT_LIGATURES.NONE) {
         fixLigatures(textBounds);
     }
     return textBounds;
@@ -3081,11 +3081,11 @@ var getRangeBounds = function getRangeBounds(node, offset, length, scrollX, scro
 
 var fixLigatures = function fixLigatures(textBounds) {
     var size = textBounds.length;
-    var prev = size > 0 ? textBounds[0].bounds : null;
+    var prev = textBounds[0].bounds;
     for (var i = 1; i < size; i++) {
         var bounds = textBounds[i].bounds;
         var next = i + 1 < size ? textBounds[i + 1].bounds : null;
-        if (!prev || !bounds.width || !bounds.height || bounds.top !== prev.top || bounds.left !== prev.left) {
+        if (!bounds.width || !bounds.height || bounds.top !== prev.top || bounds.left !== prev.left) {
             prev = bounds;
             continue;
         }
@@ -3095,9 +3095,17 @@ var fixLigatures = function fixLigatures(textBounds) {
             var nonLig = ligatures[ligLen - 1];
             var nnext = ligatures[ligLen - 2] || next;
             var rightBound = (nonLig ? nonLig.left : nnext.left + nnext.width) - prev.left;
-            bounds.left += rightBound / (1 + ligLen);
+            var offset = rightBound / (1 + ligLen);
+            bounds.left += offset;
             if (ligLen > 1) {
-                bounds = ligatures[ligLen - 2];
+                for (var j = 0, ligSize = ligLen - 1; j < ligSize; j++) {
+                    prev = bounds;
+                    bounds = ligatures[j] || bounds;
+                    if (bounds === prev) {
+                        break;
+                    }
+                    bounds.left = prev.left + offset;
+                }
                 i += ligLen - 1;
             }
         } else {
