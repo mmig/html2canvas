@@ -3090,18 +3090,41 @@ var fixLigatures = function fixLigatures(textBounds) {
             continue;
         }
         if (next && bounds.top === next.top) {
-            var offset = next.left - prev.left - prev.width;
-            if (offset <= 0) {
-                offset = prev.width / ((bounds.width + prev.width) / prev.width);
-            } else if (bounds.width < offset) {
-                offset = offset - (offset - bounds.width) / 2;
+            var ligatures = untilNonLigature(bounds, textBounds, i + 1);
+            var ligLen = ligatures.length;
+            var nonLig = ligatures[ligLen - 1];
+            var nnext = ligatures[ligLen - 2] || next;
+            var rightBound = (nonLig ? nonLig.left : nnext.left + nnext.width) - prev.left;
+            bounds.left += rightBound / (1 + ligLen);
+            if (ligLen > 1) {
+                bounds = ligatures[ligLen - 2];
+                i += ligLen - 1;
             }
-            bounds.left += offset;
         } else {
-            bounds.left += prev.width;
+            bounds.left += prev.width / 2;
         }
         prev = bounds;
     }
+};
+
+var untilNonLigature = function untilNonLigature(ligatureBounds, textBounds, startIndex) {
+    var size = textBounds.length;
+    var ligatures = [];
+    var isFound = false;
+    for (var i = startIndex; i < size; i++) {
+        var bounds = textBounds[i].bounds;
+        if (!bounds.width || !bounds.height || bounds.top > ligatureBounds.top || bounds.left > ligatureBounds.left) {
+            isFound = true;
+        }
+        ligatures.push(bounds);
+
+        if (isFound) {
+            break;
+        } else if (i === size - 1) {
+            ligatures.push(null);
+        }
+    }
+    return ligatures;
 };
 
 /***/ }),
