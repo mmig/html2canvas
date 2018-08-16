@@ -22,6 +22,7 @@ export type Options = {
     ) => boolean,
     renderSequential?: boolean,
     imageTimeout: number,
+    disableLigatures: boolean,
     logging: boolean,
     onclone?: Document => void,
     onrendertarget?: (
@@ -67,6 +68,7 @@ const html2canvas = (element: HTMLElement, conf: ?Options): Promise<*> => {
         allowTaint: false,
         backgroundColor: '#ffffff',
         imageTimeout: 15000,
+        disableLigatures: false,
         logging: true,
         proxy: null,
         removeContainer: true,
