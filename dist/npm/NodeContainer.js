@@ -24,6 +24,8 @@ var _float = require('./parsing/float');
 
 var _font = require('./parsing/font');
 
+var _fontVariantLigatures = require('./parsing/fontVariantLigatures');
+
 var _letterSpacing = require('./parsing/letterSpacing');
 
 var _lineBreak = require('./parsing/lineBreak');
@@ -67,7 +69,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT'];
 
 var NodeContainer = function () {
-    function NodeContainer(node, parent, resourceLoader, index) {
+    function NodeContainer(node, parent, resourceLoader, index, options) {
         var _this = this;
 
         _classCallCheck(this, NodeContainer);
@@ -75,10 +77,14 @@ var NodeContainer = function () {
         this.parent = parent;
         this.tagName = node.tagName;
         this.index = index;
+        this.options = options;
         this.childNodes = [];
         this.listItems = [];
         if (typeof node.start === 'number') {
             this.listStart = node.start;
+        }
+        if (options.disableLigatures) {
+            node.style.fontVariantLigatures = _fontVariantLigatures.FONT_VARIANT_LIGATURES.NONE;
         }
         var defaultView = node.ownerDocument.defaultView;
         var scrollX = defaultView.pageXOffset;
@@ -98,6 +104,7 @@ var NodeContainer = function () {
             display: display,
             float: (0, _float.parseCSSFloat)(style.float),
             font: (0, _font.parseFont)(style),
+            fontVariantLigatures: (0, _fontVariantLigatures.parseFontVariantLigatures)(style.fontVariantLigatures),
             letterSpacing: (0, _letterSpacing.parseLetterSpacing)(style.letterSpacing),
             listStyle: display === _display.DISPLAY.LIST_ITEM ? (0, _listStyle.parseListStyle)(style) : null,
             lineBreak: (0, _lineBreak.parseLineBreak)(style.lineBreak),

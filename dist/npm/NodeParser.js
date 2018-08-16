@@ -25,17 +25,17 @@ var _listStyle = require('./parsing/listStyle');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var NodeParser = exports.NodeParser = function NodeParser(node, resourceLoader, logger) {
+var NodeParser = exports.NodeParser = function NodeParser(node, resourceLoader, logger, options) {
     if (process.env.NODE_ENV !== 'production') {
         logger.log('Starting node parsing');
     }
 
     var index = 0;
 
-    var container = new _NodeContainer2.default(node, null, resourceLoader, index++);
+    var container = new _NodeContainer2.default(node, null, resourceLoader, index++, options);
     var stack = new _StackingContext2.default(container, null, true);
 
-    parseNodeTree(node, container, stack, resourceLoader, index);
+    parseNodeTree(node, container, stack, resourceLoader, index, options);
 
     if (process.env.NODE_ENV !== 'production') {
         logger.log('Finished parsing node tree');
@@ -46,7 +46,7 @@ var NodeParser = exports.NodeParser = function NodeParser(node, resourceLoader, 
 
 var IGNORED_NODE_NAMES = ['SCRIPT', 'HEAD', 'TITLE', 'OBJECT', 'BR', 'OPTION'];
 
-var parseNodeTree = function parseNodeTree(node, parent, stack, resourceLoader, index) {
+var parseNodeTree = function parseNodeTree(node, parent, stack, resourceLoader, index, options) {
     if (process.env.NODE_ENV !== 'production' && index > 50000) {
         throw new Error('Recursion error while parsing node tree');
     }
@@ -60,7 +60,7 @@ var parseNodeTree = function parseNodeTree(node, parent, stack, resourceLoader, 
             }
         } else if (childNode instanceof defaultView.HTMLElement || childNode instanceof HTMLElement || defaultView.parent && childNode instanceof defaultView.parent.HTMLElement) {
             if (IGNORED_NODE_NAMES.indexOf(childNode.nodeName) === -1) {
-                var container = new _NodeContainer2.default(childNode, parent, resourceLoader, index++);
+                var container = new _NodeContainer2.default(childNode, parent, resourceLoader, index++, options);
                 if (container.isVisible()) {
                     if (childNode.tagName === 'INPUT') {
                         // $FlowFixMe
@@ -84,18 +84,18 @@ var parseNodeTree = function parseNodeTree(node, parent, stack, resourceLoader, 
                         var childStack = new _StackingContext2.default(container, parentStack, treatAsRealStackingContext);
                         parentStack.contexts.push(childStack);
                         if (SHOULD_TRAVERSE_CHILDREN) {
-                            parseNodeTree(childNode, container, childStack, resourceLoader, index);
+                            parseNodeTree(childNode, container, childStack, resourceLoader, index, options);
                         }
                     } else {
                         stack.children.push(container);
                         if (SHOULD_TRAVERSE_CHILDREN) {
-                            parseNodeTree(childNode, container, stack, resourceLoader, index);
+                            parseNodeTree(childNode, container, stack, resourceLoader, index, options);
                         }
                     }
                 }
             }
         } else if (childNode instanceof defaultView.SVGSVGElement || childNode instanceof SVGSVGElement || defaultView.parent && childNode instanceof defaultView.parent.SVGSVGElement) {
-            var _container = new _NodeContainer2.default(childNode, parent, resourceLoader, index++);
+            var _container = new _NodeContainer2.default(childNode, parent, resourceLoader, index++, options);
             var _treatAsRealStackingContext = createsRealStackingContext(_container, childNode);
             if (_treatAsRealStackingContext || createsStackingContext(_container)) {
                 // for treatAsRealStackingContext:false, any positioned descendants and descendants

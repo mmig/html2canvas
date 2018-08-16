@@ -96,7 +96,11 @@ var renderElement = exports.renderElement = function renderElement(element, opti
                 logger.log('Document cloned, using computed rendering');
             }
 
-            var stack = (0, _NodeParser.NodeParser)(clonedElement, resourceLoader, logger);
+            var nodeContainerOptions = {
+                disableLigatures: options.disableLigatures
+            };
+
+            var stack = (0, _NodeParser.NodeParser)(clonedElement, resourceLoader, logger, nodeContainerOptions);
             var clonedDocument = clonedElement.ownerDocument;
 
             if (backgroundColor === stack.container.style.background.backgroundColor) {

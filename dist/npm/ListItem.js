@@ -105,7 +105,7 @@ var inlineListItemElement = exports.inlineListItemElement = function inlineListI
         body.removeChild(wrapper);
     } else {
         // $FlowFixMe
-        container.childNodes.push(new _NodeContainer2.default(wrapper, container, resourceLoader, 0));
+        container.childNodes.push(new _NodeContainer2.default(wrapper, container, resourceLoader, 0, container.options));
     }
 };
 

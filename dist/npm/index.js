@@ -34,6 +34,7 @@ var html2canvas = function html2canvas(element, conf) {
         allowTaint: false,
         backgroundColor: '#ffffff',
         imageTimeout: 15000,
+        disableLigatures: false,
         logging: true,
         proxy: null,
         removeContainer: true,
