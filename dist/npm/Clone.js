@@ -176,7 +176,7 @@ var DocumentCloner = exports.DocumentCloner = function () {
                         backgroundColor: '#ffffff',
                         canvas: null,
                         imageTimeout: _this3.options.imageTimeout,
-                        disableLigatures: _this3.options.disableLigatures,
+                        fixLigatures: _this3.options.fixLigatures,
                         logging: _this3.options.logging,
                         proxy: _this3.options.proxy,
                         removeContainer: _this3.options.removeContainer,

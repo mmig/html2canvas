@@ -97,7 +97,7 @@ var renderElement = exports.renderElement = function renderElement(element, opti
             }
 
             var nodeContainerOptions = {
-                disableLigatures: options.disableLigatures
+                fixLigatures: options.fixLigatures
             };
 
             var stack = (0, _NodeParser.NodeParser)(clonedElement, resourceLoader, logger, nodeContainerOptions);

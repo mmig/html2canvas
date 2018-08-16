@@ -83,9 +83,6 @@ var NodeContainer = function () {
         if (typeof node.start === 'number') {
             this.listStart = node.start;
         }
-        if (options.disableLigatures) {
-            node.style.fontVariantLigatures = _fontVariantLigatures.FONT_VARIANT_LIGATURES.NONE;
-        }
         var defaultView = node.ownerDocument.defaultView;
         var scrollX = defaultView.pageXOffset;
         var scrollY = defaultView.pageYOffset;

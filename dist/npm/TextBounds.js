@@ -9,6 +9,8 @@ var _Bounds = require('./Bounds');
 
 var _textDecoration = require('./parsing/textDecoration');
 
+var _fontVariantLigatures = require('./parsing/fontVariantLigatures');
+
 var _Feature = require('./Feature');
 
 var _Feature2 = _interopRequireDefault(_Feature);
@@ -52,6 +54,9 @@ var parseTextBounds = exports.parseTextBounds = function parseTextBounds(value, 
         }
         offset += text.length;
     }
+    if (parent.options.fixLigatures && parent.style.fontVariantLigatures !== _fontVariantLigatures.FONT_VARIANT_LIGATURES.NONE) {
+        fixLigatures(textBounds);
+    }
     return textBounds;
 };
 
@@ -75,4 +80,29 @@ var getRangeBounds = function getRangeBounds(node, offset, length, scrollX, scro
     range.setStart(node, offset);
     range.setEnd(node, offset + length);
     return _Bounds.Bounds.fromClientRect(range.getBoundingClientRect(), scrollX, scrollY);
+};
+
+var fixLigatures = function fixLigatures(textBounds) {
+    var size = textBounds.length;
+    var prev = size > 0 ? textBounds[0].bounds : null;
+    for (var i = 1; i < size; i++) {
+        var bounds = textBounds[i].bounds;
+        var next = i + 1 < size ? textBounds[i + 1].bounds : null;
+        if (!prev || !bounds.width || !bounds.height || bounds.top !== prev.top || bounds.left !== prev.left) {
+            prev = bounds;
+            continue;
+        }
+        if (next && bounds.top === next.top) {
+            var offset = next.left - prev.left - prev.width;
+            if (offset <= 0) {
+                offset = prev.width / ((bounds.width + prev.width) / prev.width);
+            } else if (bounds.width < offset) {
+                offset = offset - (offset - bounds.width) / 2;
+            }
+            bounds.left += offset;
+        } else {
+            bounds.left += prev.width;
+        }
+        prev = bounds;
+    }
 };
