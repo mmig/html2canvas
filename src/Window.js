@@ -155,7 +155,7 @@ export const renderElement = (
                           if (Array.isArray(options.target)) {
                               if (options.renderSequential) {
                                   const renderNext = (list: RenderTarget<*>[], index: number) => {
-                                      if (index >= list.length - 1) {
+                                      if (index >= list.length) {
                                           return null;
                                       }
                                       const target = list[index];
