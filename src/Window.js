@@ -2,6 +2,7 @@
 'use strict';
 
 import type {Options} from './index';
+import type {RenderTarget} from './Renderer';
 
 import Logger from './Logger';
 
@@ -153,32 +154,47 @@ export const renderElement = (
 
                           if (Array.isArray(options.target)) {
                               if (options.renderSequential) {
-                                  return options.target
-                                      .reduce((prev, target, index, list) => {
-                                          return prev.then(() => {
-                                              let _renderOptions = renderOptions;
-                                              const onrendertarget = options.onrendertarget;
-                                              if (typeof onrendertarget === 'function') {
-                                                  const result = onrendertarget(
-                                                      target,
-                                                      index,
-                                                      list,
-                                                      Object.assign({}, _renderOptions)
-                                                  );
-                                                  _renderOptions = result || _renderOptions;
-                                              }
-                                              const renderer = new Renderer(target, _renderOptions);
-                                              return renderer.render(stack);
+                                  const renderNext = (list: RenderTarget<*>[], index: number) => {
+                                      if (index >= list.length - 1) {
+                                          return null;
+                                      }
+                                      const target = list[index];
+                                      let _renderOptions = renderOptions;
+                                      const onrendertarget = options.onrendertarget;
+                                      if (typeof onrendertarget === 'function') {
+                                          const result = onrendertarget(
+                                              target,
+                                              index,
+                                              list,
+                                              Object.assign({}, _renderOptions)
+                                          );
+                                          _renderOptions = result || _renderOptions;
+                                      }
+                                      const renderer = new Renderer(target, _renderOptions);
+                                      return renderer.render(stack);
+                                  };
+                                  let current = 0,
+                                      resolve;
+                                  const promise = new Promise(_resolve => (resolve = _resolve));
+                                  const takeNext = (list: RenderTarget<*>[]) => {
+                                      const next = renderNext(list, current++);
+                                      if (next) {
+                                          next.then(() => {
+                                              takeNext(list);
                                           });
-                                      }, Promise.resolve())
-                                      .then(
-                                          result =>
-                                              Array.isArray(options.target)
-                                                  ? options.target.map(
-                                                        renderTarget => renderTarget.canvas
-                                                    )
-                                                  : result
-                                      );
+                                      } else {
+                                          resolve();
+                                      }
+                                  };
+                                  takeNext(options.target);
+                                  return promise.then(
+                                      result =>
+                                          Array.isArray(options.target)
+                                              ? options.target.map(
+                                                    renderTarget => renderTarget.canvas
+                                                )
+                                              : result
+                                  );
                               }
                               return Promise.all(
                                   options.target.map(target => {
