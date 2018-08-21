@@ -136,18 +136,37 @@ var renderElement = exports.renderElement = function renderElement(element, opti
 
                 if (Array.isArray(options.target)) {
                     if (options.renderSequential) {
-                        return options.target.reduce(function (prev, target, index, list) {
-                            return prev.then(function () {
-                                var _renderOptions = renderOptions;
-                                var onrendertarget = options.onrendertarget;
-                                if (typeof onrendertarget === 'function') {
-                                    var result = onrendertarget(target, index, list, Object.assign({}, _renderOptions));
-                                    _renderOptions = result || _renderOptions;
-                                }
-                                var renderer = new _Renderer2.default(target, _renderOptions);
-                                return renderer.render(stack);
-                            });
-                        }, Promise.resolve()).then(function (result) {
+                        var renderNext = function renderNext(list, index) {
+                            if (index >= list.length) {
+                                return null;
+                            }
+                            var target = list[index];
+                            var _renderOptions = renderOptions;
+                            var onrendertarget = options.onrendertarget;
+                            if (typeof onrendertarget === 'function') {
+                                var result = onrendertarget(target, index, list, Object.assign({}, _renderOptions));
+                                _renderOptions = result || _renderOptions;
+                            }
+                            var renderer = new _Renderer2.default(target, _renderOptions);
+                            return renderer.render(stack);
+                        };
+                        var current = 0,
+                            resolve = void 0;
+                        var promise = new Promise(function (_resolve) {
+                            return resolve = _resolve;
+                        });
+                        var takeNext = function takeNext(list) {
+                            var next = renderNext(list, current++);
+                            if (next) {
+                                next.then(function () {
+                                    takeNext(list);
+                                });
+                            } else {
+                                resolve();
+                            }
+                        };
+                        takeNext(options.target);
+                        return promise.then(function (result) {
                             return Array.isArray(options.target) ? options.target.map(function (renderTarget) {
                                 return renderTarget.canvas;
                             }) : result;
