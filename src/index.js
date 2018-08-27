@@ -24,7 +24,7 @@ export type Options = {
     imageTimeout: number,
     fixLigatures: boolean,
     logging: boolean,
-    onclone?: Document => void,
+    onclone?: (Document, HTMLElement) => void,
     onrendertarget?: (
         renderTarget: RenderTarget<*>,
         index: number,
