@@ -110,7 +110,8 @@ export const renderElement = (
                       }
 
                       const nodeContainerOptions = {
-                          fixLigatures: options.fixLigatures
+                          fixLigatures: options.fixLigatures,
+                          userData: options.userData
                       };
 
                       const stack = NodeParser(
@@ -158,7 +159,8 @@ export const renderElement = (
                               height:
                                   typeof options.height === 'number'
                                       ? options.height
-                                      : Math.ceil(height)
+                                      : Math.ceil(height),
+                              userData: options.userData
                           };
 
                           if (Array.isArray(options.target)) {

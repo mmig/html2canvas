@@ -204,7 +204,8 @@ export class DocumentCloner {
                             windowWidth: documentElement.ownerDocument.defaultView.innerWidth,
                             windowHeight: documentElement.ownerDocument.defaultView.innerHeight,
                             scrollX: documentElement.ownerDocument.defaultView.pageXOffset,
-                            scrollY: documentElement.ownerDocument.defaultView.pageYOffset
+                            scrollY: documentElement.ownerDocument.defaultView.pageYOffset,
+                            userData: this.options.userData
                         },
                         this.logger.child(iframeKey)
                     );
@@ -633,7 +634,9 @@ export const cloneWindow = (
             cloner.clonedReferenceElement instanceof ownerDocument.defaultView.HTMLElement ||
             cloner.clonedReferenceElement instanceof HTMLElement
                 ? typeof onclone === 'function'
-                  ? Promise.resolve().then(() => onclone(documentClone)).then(() => result)
+                  ? Promise.resolve()
+                        .then(() => onclone(documentClone, cloner.clonedReferenceElement))
+                        .then(() => result)
                   : result
                 : Promise.reject(
                       __DEV__

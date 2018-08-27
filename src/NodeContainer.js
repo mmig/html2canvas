@@ -94,7 +94,8 @@ type StyleDeclaration = {
 const INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT'];
 
 export type NodeContainerOptions = {
-    fixLigatures: boolean
+    fixLigatures: boolean,
+    userData?: *
 };
 
 export default class NodeContainer {

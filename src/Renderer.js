@@ -49,7 +49,8 @@ export type RenderOptions = {
         element: NodeContainer,
         renderTarget: RenderTarget<*>,
         renderOptions: RenderOptions
-    ) => boolean
+    ) => boolean,
+    userData?: *
 };
 
 export interface RenderTarget<Output> {
