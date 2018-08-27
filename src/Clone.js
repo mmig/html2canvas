@@ -634,7 +634,9 @@ export const cloneWindow = (
             cloner.clonedReferenceElement instanceof ownerDocument.defaultView.HTMLElement ||
             cloner.clonedReferenceElement instanceof HTMLElement
                 ? typeof onclone === 'function'
-                  ? Promise.resolve().then(() => onclone(documentClone)).then(() => result)
+                  ? Promise.resolve()
+                        .then(() => onclone(documentClone, cloner.clonedReferenceElement))
+                        .then(() => result)
                   : result
                 : Promise.reject(
                       __DEV__
