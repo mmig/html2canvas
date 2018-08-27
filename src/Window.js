@@ -110,7 +110,8 @@ export const renderElement = (
 
                       const nodeContainerOptions = {
                           fixLigatures: options.fixLigatures,
-                          userData: options.userData
+                          userData: options.userData,
+                          onparsenode: options.onparsenode
                       };
 
                       const stack = NodeParser(

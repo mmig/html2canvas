@@ -95,7 +95,8 @@ const INPUT_TAGS = ['INPUT', 'TEXTAREA', 'SELECT'];
 
 export type NodeContainerOptions = {
     fixLigatures: boolean,
-    userData?: *
+    userData?: *,
+    onparsenode?: (node: HTMLElement | SVGSVGElement, nodeContainer: NodeContainer) => void
 };
 
 export default class NodeContainer {
@@ -215,6 +216,10 @@ export default class NodeContainer {
             this.style.border,
             this.style.borderRadius
         );
+
+        if (this.options && typeof this.options.onparsenode === 'function') {
+            this.options.onparsenode(node, this);
+        }
 
         if (__DEV__) {
             this.name = `${node.tagName.toLowerCase()}${node.id
