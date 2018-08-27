@@ -98,7 +98,8 @@ var renderElement = exports.renderElement = function renderElement(element, opti
 
             var nodeContainerOptions = {
                 fixLigatures: options.fixLigatures,
-                userData: options.userData
+                userData: options.userData,
+                onparsenode: options.onparsenode
             };
 
             var stack = (0, _NodeParser.NodeParser)(clonedElement, resourceLoader, logger, nodeContainerOptions);

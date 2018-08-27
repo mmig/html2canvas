@@ -1177,6 +1177,10 @@ var NodeContainer = function () {
         this.bounds = IS_INPUT ? (0, _Input.reformatInputBounds)((0, _Bounds.parseBounds)(node, scrollX, scrollY)) : (0, _Bounds.parseBounds)(node, scrollX, scrollY);
         this.curvedBounds = (0, _Bounds.parseBoundCurves)(this.bounds, this.style.border, this.style.borderRadius);
 
+        if (this.options && typeof this.options.onparsenode === 'function') {
+            this.options.onparsenode(node, this);
+        }
+
         if (false) {
             this.name = '' + node.tagName.toLowerCase() + (node.id ? '#' + node.id : '') + node.className.toString().split(' ').map(function (s) {
                 return s.length ? '.' + s : '';
@@ -3604,7 +3608,8 @@ var renderElement = exports.renderElement = function renderElement(element, opti
 
             var nodeContainerOptions = {
                 fixLigatures: options.fixLigatures,
-                userData: options.userData
+                userData: options.userData,
+                onparsenode: options.onparsenode
             };
 
             var stack = (0, _NodeParser.NodeParser)(clonedElement, resourceLoader, logger, nodeContainerOptions);
