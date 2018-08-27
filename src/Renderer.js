@@ -44,7 +44,8 @@ export type RenderOptions = {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
+    userData?: *
 };
 
 export interface RenderTarget<Output> {

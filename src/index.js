@@ -30,7 +30,8 @@ export type Options = {
     scrollX: number,
     scrollY: number,
     windowWidth: number,
-    windowHeight: number
+    windowHeight: number,
+    userData?: *
 };
 
 const html2canvas = (element: HTMLElement, conf: ?Options): Promise<*> => {
