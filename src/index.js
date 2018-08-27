@@ -6,6 +6,7 @@ import type NodeContainer from './NodeContainer';
 
 import CanvasRenderer from './renderer/CanvasRenderer';
 import Logger from './Logger';
+import NodeContainer from './NodeContainer';
 import {renderElement} from './Window';
 
 export type Options = {
@@ -44,7 +45,8 @@ export type Options = {
     scrollY: number,
     windowWidth: number,
     windowHeight: number,
-    userData?: *
+    userData?: *,
+    onparsenode?: (node: HTMLElement | SVGSVGElement, nodeContainer: NodeContainer) => void
 };
 
 const html2canvas = (element: HTMLElement, conf: ?Options): Promise<*> => {
