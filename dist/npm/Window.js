@@ -97,7 +97,8 @@ var renderElement = exports.renderElement = function renderElement(element, opti
             }
 
             var nodeContainerOptions = {
-                fixLigatures: options.fixLigatures
+                fixLigatures: options.fixLigatures,
+                userData: options.userData
             };
 
             var stack = (0, _NodeParser.NodeParser)(clonedElement, resourceLoader, logger, nodeContainerOptions);
@@ -135,7 +136,8 @@ var renderElement = exports.renderElement = function renderElement(element, opti
                     x: typeof options.x === 'number' ? options.x : left,
                     y: typeof options.y === 'number' ? options.y : top,
                     width: typeof options.width === 'number' ? options.width : Math.ceil(width),
-                    height: typeof options.height === 'number' ? options.height : Math.ceil(height)
+                    height: typeof options.height === 'number' ? options.height : Math.ceil(height),
+                    userData: options.userData
                 };
 
                 if (Array.isArray(options.target)) {

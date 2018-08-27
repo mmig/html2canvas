@@ -191,7 +191,8 @@ var DocumentCloner = exports.DocumentCloner = function () {
                         windowWidth: documentElement.ownerDocument.defaultView.innerWidth,
                         windowHeight: documentElement.ownerDocument.defaultView.innerHeight,
                         scrollX: documentElement.ownerDocument.defaultView.pageXOffset,
-                        scrollY: documentElement.ownerDocument.defaultView.pageYOffset
+                        scrollY: documentElement.ownerDocument.defaultView.pageYOffset,
+                        userData: _this3.options.userData
                     }, _this3.logger.child(iframeKey));
                 }).then(function (canvas) {
                     return new Promise(function (resolve, reject) {
@@ -539,7 +540,7 @@ var cloneWindow = exports.cloneWindow = function cloneWindow(ownerDocument, boun
             var onclone = options.onclone;
 
             return cloner.clonedReferenceElement instanceof cloneWindow.HTMLElement || cloner.clonedReferenceElement instanceof ownerDocument.defaultView.HTMLElement || cloner.clonedReferenceElement instanceof HTMLElement ? typeof onclone === 'function' ? Promise.resolve().then(function () {
-                return onclone(documentClone);
+                return onclone(documentClone, cloner.clonedReferenceElement);
             }).then(function () {
                 return result;
             }) : result : Promise.reject(process.env.NODE_ENV !== 'production' ? 'Error finding the ' + referenceElement.nodeName + ' in the cloned document' : '');
